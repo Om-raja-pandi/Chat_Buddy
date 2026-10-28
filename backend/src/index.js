@@ -10,13 +10,11 @@ import { connectDB } from "./lib/db.js";
 import { job } from "./lib/cron.js";
 import clerkWebhook from "./webhooks/clerk.webhook.js";
 import authRoutes from "./routes/auth.routes.js";
+import messageRoutes from "./routes/message.routes.js"
 
 const app = express();
-
 const PORT = process.env.PORT;
-//const HOST = process.env.HOST || "127.0.0.1";
 const FRONTEND_URL = process.env.FRONTEND_URL;
-
 const publicDir = path.join(process.cwd(), "public");
 
 app.use(
@@ -32,7 +30,8 @@ app.get("/health", (req, res) => {
   res.status(200).json({ ok: true });
 });
 
-app.use("/api/auth",authRoutes)
+app.use("/api/auth",authRoutes);
+app.use("/api/message",messageRoutes);
 
 if (fs.existsSync(publicDir)) {
   app.use(express.static(publicDir));
