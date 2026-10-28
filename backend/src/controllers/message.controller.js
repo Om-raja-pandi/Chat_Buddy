@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import Message from "../models/messageModel.js";
+import { getReceiveSocketId } from "../lib/socket.js";
 
 export async function getUsersForSidebar(req, res) {
     try {
@@ -100,6 +101,11 @@ export async function sendMessages(req, res) {
             video: videoUrl,
         })
         await newMessage.save();
+
+        const receiverScoketId = getReceiveSocketId(receiverId);
+        if(receiverScoketId){
+            io.to(receiverScoketId).emit("newMessage", newMessage)
+        }
 
         res.status(201).json(newMessage);
 
