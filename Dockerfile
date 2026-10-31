@@ -5,9 +5,9 @@
 
 FROM node:24-slim AS frontend-build
 WORKDIR /app/frontend
-COPY frontend/ ./
-RUN npm install --no-audit --no-fund --legacy-peer-deps
 COPY frontend/package*.json ./
+RUN npm install --no-audit --no-fund --legacy-peer-deps
+COPY frontend/ ./
 
 #Empty = browser calls / api on the same host as the page.
 ENV VITE_API_URL=
